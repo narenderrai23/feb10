@@ -21,9 +21,9 @@ class CourseTypeResource extends Resource
 {
     protected static ?string $model = CourseType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-hashtag';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-3';
 
-    protected static ?string $navigationGroup = 'Course';
+    protected static ?string $navigationGroup = 'Helper';
 
 
     public static function form(Form $form): Form

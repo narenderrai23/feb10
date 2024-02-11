@@ -18,6 +18,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\Toggle;
 
+
+
 class CountryResource extends Resource
 {
     protected static ?string $model = Country::class;
@@ -32,7 +34,12 @@ class CountryResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        TextInput::make('country_code')->minLength(2)->maxLength(2)->autocapitalize('words'),
+                        TextInput::make('country_code')
+                            ->autocapitalize('city_code')
+                            ->dehydrateStateUsing(fn (string $state): string => strtoupper($state))
+                            ->alpha()
+                            ->required()
+                            ->length(2),
                         TextInput::make('name'),
                         Toggle::make('status')
                             ->onColor('success')

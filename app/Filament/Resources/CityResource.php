@@ -20,6 +20,12 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables\Actions\ExportBulkAction;
 use App\Filament\Exports\CityExporter;
+use App\Models\State;
+use Illuminate\Support\Collection;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Tables\Filters\SelectFilter;
+
 
 class CityResource extends Resource
 {
@@ -33,14 +39,24 @@ class CityResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        Select::make('state_id')->relationship('state', 'name'),
-                        TextInput::make('city_code')->minLength(3)->maxLength(3)->autocapitalize('words'),
+                        Select::make('state_id')
+                            ->label('State')
+                            ->options(fn (Get $get): Collection => State::query()
+                                ->pluck('name', 'id'))
+                            ->live()
+                            ->searchable()
+                            ->required(),
+                        TextInput::make('city_code')
+                            ->autocapitalize('city_code')
+                            ->alpha()
+                            ->dehydrateStateUsing(fn (string $state): string => strtoupper($state))
+                            ->required()
+                            ->length(3),
                         TextInput::make('name'),
                         Toggle::make('status')
                             ->onColor('success')
                             ->offColor('danger')
                             ->label('Visible')
-                            ->helperText('This product will be hidden from all sales channels.')
                             ->default(true)
                     ])
             ]);
@@ -50,6 +66,9 @@ class CityResource extends Resource
     {
         return $table
             ->columns([
+                // Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
+                //     ->label('Image')
+                //     ->collection('product-images'),
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('city_code')->sortable()->searchable(),
                 TextColumn::make('name')->sortable()->searchable(),
@@ -58,7 +77,11 @@ class CityResource extends Resource
                 TextColumn::make('created_at')->dateTime()
             ])
             ->filters([
-                //
+                SelectFilter::make('state')
+                    ->relationship('state', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -66,7 +89,7 @@ class CityResource extends Resource
             ])
             ->bulkActions([
                 ExportBulkAction::make()
-                ->exporter(CityExporter::class),
+                    ->exporter(CityExporter::class),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'date_admission',
         'branch_id',
@@ -28,6 +27,7 @@ class Student extends Model
         'state_id',
         'city_id',
         'course_status_id',
+        'education_id',
         'email',
         'student_whatsapp_phone',
     ];
@@ -44,6 +44,11 @@ class Student extends Model
     public function gender()
     {
         return $this->belongsTo(Gender::class);
+    }
+
+    public function education()
+    {
+        return $this->belongsTo(Education::class);
     }
 
     public function country()

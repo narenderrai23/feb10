@@ -33,11 +33,15 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('student_whatsapp_phone');
             $table->foreignId('course_status_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('education_id')->constrained()->cascadeOnDelete();
+            $table->string('qualification')->nullable();
+            $table->string('board_university')->nullable();
+            $table->string('year_of_passing')->nullable();
+            $table->string('percentage')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

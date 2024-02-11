@@ -29,9 +29,9 @@ class BranchResource extends Resource
 {
     protected static ?string $model = Branch::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
 
-    protected static ?string $navigationGroup = 'Branch';
+    // protected static ?string $navigationGroup = 'Branch';
     public static function form(Form $form): Form
     {
         return $form
@@ -42,7 +42,8 @@ class BranchResource extends Resource
                             ->schema([
                                 TextInput::make('name')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    ->required(),
                                 TextInput::make('head')
                                     ->required()
                                     ->maxLength(255),
@@ -65,6 +66,8 @@ class BranchResource extends Resource
                                 TextInput::make('password')
                                     ->label('Password')
                                     ->password()
+                                    ->minLength(5)
+                                    ->revealable()
                                     ->required(),
                             ])
                     ])->columnSpan(['lg' => 2]),

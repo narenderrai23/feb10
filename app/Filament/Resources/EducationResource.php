@@ -2,29 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\StudentEducationResource\Pages;
-use App\Filament\Resources\StudentEducationResource\RelationManagers;
-use App\Models\StudentEducation;
+use App\Filament\Resources\EducationResource\Pages;
+use App\Filament\Resources\EducationResource\RelationManagers;
+use App\Models\Education;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+
 use Filament\Forms\Components\Section;
-
-
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\Toggle;
 
-class StudentEducationResource extends Resource
+class EducationResource extends Resource
 {
-    protected static ?string $model = StudentEducation::class;
+    protected static ?string $model = Education::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Student';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-3';
 
+    protected static ?string $navigationGroup = 'Helper';
+
+    protected static ?string $navigationLevel = 'Student Education';
 
     public static function form(Form $form): Form
     {
@@ -34,10 +35,10 @@ class StudentEducationResource extends Resource
                     ->schema([
                         TextInput::make('name'),
                         Toggle::make('status')
-                                    ->onColor('success')
-                                    ->offColor('danger')
-                                    ->label('Visible')
-                                    ->default(true)
+                            ->onColor('success')
+                            ->offColor('danger')
+                            ->label('Visible')
+                            ->default(true)
                     ])
             ]);
     }
@@ -74,9 +75,9 @@ class StudentEducationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStudentEducation::route('/'),
-            'create' => Pages\CreateStudentEducation::route('/create'),
-            'edit' => Pages\EditStudentEducation::route('/{record}/edit'),
+            'index' => Pages\ListEducation::route('/'),
+            'create' => Pages\CreateEducation::route('/create'),
+            'edit' => Pages\EditEducation::route('/{record}/edit'),
         ];
     }
 }

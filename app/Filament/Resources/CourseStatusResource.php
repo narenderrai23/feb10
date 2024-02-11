@@ -23,9 +23,9 @@ use Filament\Forms\Components\Toggle;
 class CourseStatusResource extends Resource
 {
     protected static ?string $model = CourseStatus::class;
-    protected static ?string $navigationGroup = 'Course';
+    protected static ?string $navigationGroup = 'Helper';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-3';
 
     public static function form(Form $form): Form
     {

@@ -18,6 +18,7 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
 use App\Models\CourseStatus;
+use App\Models\Education;
 
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -31,12 +32,14 @@ use Filament\Forms\Set;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Notifications\Notification;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Columns\ImageColumn;
 
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
-    protected static ?string $navigationGroup = 'Student';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // protected static ?string $navigationGroup = 'Student';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     public static function form(Form $form): Form
     {
@@ -174,7 +177,17 @@ class StudentResource extends Resource
                             ->default(1)
                             ->searchable()
                             ->required(),
-                    ])->columns(2)
+                    ])->columns(2),
+                Section::make('Contact Information')
+                    ->schema([
+                        Select::make('education_id')
+                            ->label('Education')
+                            ->options(fn (Get $get): Collection => Education::query()
+                                ->pluck('name', 'id'))
+                            ->live()
+                            ->searchable()
+                            ->required(),
+                    ])->columns(2),
             ]);
     }
 
@@ -182,6 +195,9 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
+                // ImageColumn::make('profile_image')
+                // ->checkFileExistence(false)
+                // ->defaultImageUrl(url('/images/placeholder.png')),
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('enrollment'),
                 TextColumn::make('name'),
@@ -202,7 +218,12 @@ class StudentResource extends Resource
                 TextColumn::make('created_at')->dateTime()
             ])
             ->filters([
-                //
+                // SelectFilter::make('branch')->relationship('branch', 'name')
+                SelectFilter::make('branch')
+                    ->relationship('branch', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

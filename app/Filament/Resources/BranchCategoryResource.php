@@ -18,9 +18,7 @@ use Filament\Forms\Components\Toggle;
 class BranchCategoryResource extends Resource
 {
     protected static ?string $model = BranchCategory::class;
-    protected static ?string $navigationGroup = 'Branch';
-
-
+    protected static ?string $navigationGroup = 'Helper';
     protected static ?string $navigationIcon = 'heroicon-o-square-2-stack';
 
     public static function form(Form $form): Form
@@ -29,7 +27,8 @@ class BranchCategoryResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        TextInput::make('name'),
+                        TextInput::make('name')
+                            ->required(),
                         Toggle::make('status')
                             ->onColor('success')
                             ->offColor('danger')
